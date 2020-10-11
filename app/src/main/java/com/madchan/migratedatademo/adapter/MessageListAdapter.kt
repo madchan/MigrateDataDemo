@@ -1,16 +1,22 @@
 package com.madchan.migratedatademo.adapter
 
+import android.view.View
+import android.view.ViewGroup
 import android.view.ViewStub
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.madchan.migratedatademo.R
+import com.madchan.migratedatademo.bean.AudioContent
 import com.madchan.migratedatademo.bean.ImageContent
 import com.madchan.migratedatademo.bean.Message
+import com.madchan.migratedatademo.bean.VideoContent
 import com.madchan.migratedatademo.constant.ContentType
 import com.madchan.migratedatademo.constant.MessageType
+import com.madchan.migratedatademo.manager.AudioPlayerManager
 import com.madchan.migratedatademo.manager.OldStorageManager
 import com.madchan.migratedatademo.util.JSONUtil
 import java.io.File
@@ -35,6 +41,8 @@ class MessageListAdapter(data: MutableList<Message>? = null) :
         when (item.type) {
             ContentType.TEXT -> convertText(holder, item)
             ContentType.IMAGE -> convertImage(holder, item)
+            ContentType.AUDIO -> convertAudio(holder, item)
+            ContentType.VIDEO -> convertVideo(holder, item)
         }
     }
 
@@ -46,16 +54,37 @@ class MessageListAdapter(data: MutableList<Message>? = null) :
     }
 
     private fun convertImage(holder: BaseViewHolder, item: Message) {
-        val viewStub = holder.getView<ViewStub>(R.id.thumbnail_view_stub)
-        val view: ImageView =
-            (if (viewStub.parent != null) viewStub.inflate() else holder.getView(R.id.thumbnail_layout)) as ImageView
         val image = JSONUtil.fromJson(item.content, ImageContent::class.java)
-        Glide.with(context)
-            .load(File(OldStorageManager.getMessageThumbnailStorageDir(), image.thumbnail))
-            .override(500, 500)
-            .centerCrop()
-            .into(view)
+        convertThumbnail(holder, image.thumbnail)
     }
 
+    private fun convertAudio(holder: BaseViewHolder, item: Message) {
+        val viewStub = holder.getView<ViewStub>(R.id.audio_view_stub)
+        val view: ViewGroup =
+            (if (viewStub.parent != null) viewStub.inflate() else holder.getView(R.id.audio_layout)) as ViewGroup
+        val audio = JSONUtil.fromJson(item.content, AudioContent::class.java)
+        view.setOnClickListener {
+            AudioPlayerManager.play(File(OldStorageManager.getMessageAudioStorageDir(), audio.compressed).absolutePath)
+        }
+        holder.setImageResource(R.id.volume, if(item.isReceived()) R.mipmap.message_ic_voice_blue_3 else R.mipmap.message_ic_voice_blue_r_3)
+    }
+
+    private fun convertVideo(holder: BaseViewHolder, item: Message) {
+        val video = JSONUtil.fromJson(item.content, VideoContent::class.java)
+        convertThumbnail(holder, video.thumbnail)
+        holder.setVisible(R.id.play_button, true)
+    }
+
+    private fun convertThumbnail(holder: BaseViewHolder, thumbnail: String) {
+        val viewStub = holder.getView<ViewStub>(R.id.thumbnail_view_stub)
+        val view =
+            (if (viewStub.parent != null) viewStub.inflate() else holder.getView(R.id.thumbnail_layout)) as View
+        val imageView = view.findViewById<ImageView>(R.id.thumbnail)
+        Glide.with(context)
+            .load(File(OldStorageManager.getMessageThumbnailStorageDir(), thumbnail))
+            .override(500, 500)
+            .centerCrop()
+            .into(imageView)
+    }
 
 }

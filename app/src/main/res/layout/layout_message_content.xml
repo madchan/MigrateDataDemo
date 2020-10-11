@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ViewStub
+        android:id="@+id/text_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inflatedId="@+id/text_layout"
+        android:layout="@layout/stub_view_text"
+        tools:visibility="visible" />
+
+    <ViewStub
+        android:id="@+id/thumbnail_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inflatedId="@+id/thumbnail_layout"
+        android:layout="@layout/stub_view_thumbnail"
+        tools:visibility="visible" />
+
+    <ViewStub
+        android:id="@+id/audio_view_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inflatedId="@+id/audio_layout"
+        android:layout="@layout/stub_view_audio"
+        tools:visibility="visible" />
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.madchan.migratedatademo.dummy
 
+import com.madchan.migratedatademo.bean.AudioContent
 import com.madchan.migratedatademo.bean.ImageContent
 import com.madchan.migratedatademo.bean.Message
 import com.madchan.migratedatademo.constant.ContentType
@@ -135,6 +136,21 @@ object DummyContent {
                     ImageContent(
                         "ic_tired.jpg",
                         "ic_tired.jpg"
+                    )
+                )
+            )
+        )
+        ITEMS.add(
+            Message(
+                0,
+                ContentType.AUDIO,
+                DUMMY_MY_ID,
+                DUMMY_OTHER_ID,
+                "Spike",
+                "ic_avatar_spike.jpg",
+                JSONUtil.toJson(
+                    AudioContent(
+                        "where_did_the_money_go.m4a"
                     )
                 )
             )
