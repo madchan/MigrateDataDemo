@@ -226,6 +226,8 @@ class ScopedStorageManager {
                                 LogUtil.d("progress = $progress")
 
                                 emitter.onNext(progress)    // 回调迁移进度
+
+                                Thread.sleep(200)
                             }
                         }
                     } else {
@@ -248,6 +250,7 @@ class ScopedStorageManager {
                 }
                 emitter.onNext(100) // 迁移完成
             })
+                    .distinct()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({

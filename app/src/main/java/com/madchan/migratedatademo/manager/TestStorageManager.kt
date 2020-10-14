@@ -30,6 +30,7 @@ class TestStorageManager {
             // 列入需要迁移的旧版存储目录
             var map = linkedMapOf(
                     // 需要保留并迁移的目录
+                    OldStorageManager.getAvatarStorageDir() to getAvatarStorageDir(),
                     OldStorageManager.getMessageThumbnailStorageDir() to getMessageThumbnailStorageDir(),
                     OldStorageManager.getMessageImageStorageDir() to getMessageImageStorageDir(),
                     OldStorageManager.getMessageAudioStorageDir() to getMessageAudioStorageDir(),
@@ -43,6 +44,13 @@ class TestStorageManager {
 
             ScopedStorageManager.migrateExistingFilesFromLegacyStorageDir(map, listener)
         }
+
+        /**
+         * 头像
+         */
+        @JvmStatic
+        fun getAvatarStorageDir() = ScopedStorageManager.getExternalStorageDir(
+            BaseApplication.getContext(), null, "$SUB_DIRECTORY_UNIVERSAL/Avatar")
 
         /**
          * 消息-缩略图

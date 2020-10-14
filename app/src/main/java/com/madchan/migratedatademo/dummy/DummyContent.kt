@@ -1,9 +1,6 @@
 package com.madchan.migratedatademo.dummy
 
-import com.madchan.migratedatademo.bean.AudioContent
-import com.madchan.migratedatademo.bean.ImageContent
-import com.madchan.migratedatademo.bean.Message
-import com.madchan.migratedatademo.bean.VideoContent
+import com.madchan.migratedatademo.bean.*
 import com.madchan.migratedatademo.constant.ContentType
 import com.madchan.migratedatademo.util.JSONUtil
 import java.util.*
@@ -13,6 +10,7 @@ object DummyContent {
     const val DUMMY_MY_ID = "100001"
     const val DUMMY_OTHER_ID = "100002"
 
+    val SPLASH = Splash("splash.jpg", "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1602704749974&di=9683ea63fe7c49d960f8a894a8d66c3a&imgtype=0&src=http%3A%2F%2Fimglf5.nosdn.127.net%2Fimg%2FWTlOWGhKUlFmN1JsSmhTM2lSK0tQRnFJSkdmem5nb1IyQ1dENnhCbCs5NVc2bkYwS3JvM0xBPT0.jpg%3FimageView%26thumbnail%3D1680x0%26quality%3D96%26stripmeta%3D0%26type%3Djpg%257Cwatermark%26type%3D2%26text%3Dwqkg")
     val ITEMS: MutableList<Message> = ArrayList()
 
     init {

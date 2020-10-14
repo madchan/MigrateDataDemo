@@ -20,6 +20,7 @@ import com.madchan.migratedatademo.constant.ContentType
 import com.madchan.migratedatademo.constant.MessageType
 import com.madchan.migratedatademo.manager.AudioPlayerManager
 import com.madchan.migratedatademo.manager.OldStorageManager
+import com.madchan.migratedatademo.manager.TestStorageManager
 import com.madchan.migratedatademo.util.JSONUtil
 import java.io.File
 
@@ -34,7 +35,8 @@ class MessageListAdapter(data: MutableList<Message>? = null) :
     override fun convert(holder: BaseViewHolder, item: Message) {
         holder.setText(R.id.nickname, item.nickname)
         Glide.with(context)
-            .load(File(OldStorageManager.getAvatarStorageDir(), item.avatar))
+//            .load(File(OldStorageManager.getAvatarStorageDir(), item.avatar))
+            .load(File(TestStorageManager.getAvatarStorageDir(), item.avatar))
             .centerCrop()
             .circleCrop()
             .into(holder.getView(R.id.avatar))
@@ -69,7 +71,8 @@ class MessageListAdapter(data: MutableList<Message>? = null) :
         view.setOnClickListener {
             volume.setImageResource(if (item.isReceived()) R.drawable.message_playaudio_blue_animlist else R.drawable.message_playaudio_white_animlist)
             (volume.drawable as AnimationDrawable).start()
-            AudioPlayerManager.play(File(OldStorageManager.getMessageAudioStorageDir(), audio.compressed).absolutePath, MediaPlayer.OnCompletionListener {
+//            AudioPlayerManager.play(File(OldStorageManager.getMessageAudioStorageDir(), audio.compressed).absolutePath, MediaPlayer.OnCompletionListener {
+            AudioPlayerManager.play(File(TestStorageManager.getMessageAudioStorageDir(), audio.compressed).absolutePath, MediaPlayer.OnCompletionListener {
                 (volume.drawable as AnimationDrawable).stop()
                 volume.setImageResource(if(item.isReceived()) R.mipmap.message_ic_voice_blue_3 else R.mipmap.message_ic_voice_blue_r_3)
             })
@@ -82,7 +85,8 @@ class MessageListAdapter(data: MutableList<Message>? = null) :
         val view = convertThumbnail(holder, video.thumbnail)
         holder.setVisible(R.id.play_button, true)
         view.setOnClickListener {
-            VideoPlayActivity.startActivity(context, File(OldStorageManager.getMessageVideoStorageDir(), video.compressed).absolutePath)
+//            VideoPlayActivity.startActivity(context, File(OldStorageManager.getMessageVideoStorageDir(), video.compressed).absolutePath)
+            VideoPlayActivity.startActivity(context, File(TestStorageManager.getMessageVideoStorageDir(), video.compressed).absolutePath)
         }
     }
 
@@ -92,7 +96,8 @@ class MessageListAdapter(data: MutableList<Message>? = null) :
             (if (viewStub.parent != null) viewStub.inflate() else holder.getView(R.id.thumbnail_layout)) as View
         val imageView = view.findViewById<ImageView>(R.id.thumbnail)
         Glide.with(context)
-            .load(File(OldStorageManager.getMessageThumbnailStorageDir(), thumbnail))
+//            .load(File(OldStorageManager.getMessageThumbnailStorageDir(), thumbnail))
+            .load(File(TestStorageManager.getMessageThumbnailStorageDir(), thumbnail))
             .override(500, 500)
             .centerCrop()
             .into(imageView)
