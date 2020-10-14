@@ -1,15 +1,17 @@
 package com.madchan.migratedatademo.adapter
 
+import android.graphics.drawable.AnimationDrawable
+import android.media.MediaPlayer
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.madchan.migratedatademo.R
+import com.madchan.migratedatademo.activity.VideoPlayActivity
 import com.madchan.migratedatademo.bean.AudioContent
 import com.madchan.migratedatademo.bean.ImageContent
 import com.madchan.migratedatademo.bean.Message
@@ -62,20 +64,29 @@ class MessageListAdapter(data: MutableList<Message>? = null) :
         val viewStub = holder.getView<ViewStub>(R.id.audio_view_stub)
         val view: ViewGroup =
             (if (viewStub.parent != null) viewStub.inflate() else holder.getView(R.id.audio_layout)) as ViewGroup
+        val volume = view.findViewById<ImageView>(R.id.volume)
         val audio = JSONUtil.fromJson(item.content, AudioContent::class.java)
         view.setOnClickListener {
-            AudioPlayerManager.play(File(OldStorageManager.getMessageAudioStorageDir(), audio.compressed).absolutePath)
+            volume.setImageResource(if (item.isReceived()) R.drawable.message_playaudio_blue_animlist else R.drawable.message_playaudio_white_animlist)
+            (volume.drawable as AnimationDrawable).start()
+            AudioPlayerManager.play(File(OldStorageManager.getMessageAudioStorageDir(), audio.compressed).absolutePath, MediaPlayer.OnCompletionListener {
+                (volume.drawable as AnimationDrawable).stop()
+                volume.setImageResource(if(item.isReceived()) R.mipmap.message_ic_voice_blue_3 else R.mipmap.message_ic_voice_blue_r_3)
+            })
         }
-        holder.setImageResource(R.id.volume, if(item.isReceived()) R.mipmap.message_ic_voice_blue_3 else R.mipmap.message_ic_voice_blue_r_3)
+        volume.setImageResource(if(item.isReceived()) R.mipmap.message_ic_voice_blue_3 else R.mipmap.message_ic_voice_blue_r_3)
     }
 
     private fun convertVideo(holder: BaseViewHolder, item: Message) {
         val video = JSONUtil.fromJson(item.content, VideoContent::class.java)
-        convertThumbnail(holder, video.thumbnail)
+        val view = convertThumbnail(holder, video.thumbnail)
         holder.setVisible(R.id.play_button, true)
+        view.setOnClickListener {
+            VideoPlayActivity.startActivity(context, File(OldStorageManager.getMessageVideoStorageDir(), video.compressed).absolutePath)
+        }
     }
 
-    private fun convertThumbnail(holder: BaseViewHolder, thumbnail: String) {
+    private fun convertThumbnail(holder: BaseViewHolder, thumbnail: String) : View{
         val viewStub = holder.getView<ViewStub>(R.id.thumbnail_view_stub)
         val view =
             (if (viewStub.parent != null) viewStub.inflate() else holder.getView(R.id.thumbnail_layout)) as View
@@ -85,6 +96,7 @@ class MessageListAdapter(data: MutableList<Message>? = null) :
             .override(500, 500)
             .centerCrop()
             .into(imageView)
+        return view
     }
 
 }

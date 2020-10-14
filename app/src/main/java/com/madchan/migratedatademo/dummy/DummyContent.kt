@@ -3,6 +3,7 @@ package com.madchan.migratedatademo.dummy
 import com.madchan.migratedatademo.bean.AudioContent
 import com.madchan.migratedatademo.bean.ImageContent
 import com.madchan.migratedatademo.bean.Message
+import com.madchan.migratedatademo.bean.VideoContent
 import com.madchan.migratedatademo.constant.ContentType
 import com.madchan.migratedatademo.util.JSONUtil
 import java.util.*
@@ -78,6 +79,22 @@ object DummyContent {
         ITEMS.add(
             Message(
                 0,
+                ContentType.IMAGE,
+                DUMMY_MY_ID,
+                DUMMY_OTHER_ID,
+                "Spike",
+                "ic_avatar_spike.jpg",
+                JSONUtil.toJson(
+                    ImageContent(
+                        "ic_tired.jpg",
+                        "ic_tired.jpg"
+                    )
+                )
+            )
+        )
+        ITEMS.add(
+            Message(
+                0,
                 ContentType.TEXT,
                 DUMMY_OTHER_ID,
                 DUMMY_MY_ID,
@@ -127,22 +144,6 @@ object DummyContent {
         ITEMS.add(
             Message(
                 0,
-                ContentType.IMAGE,
-                DUMMY_MY_ID,
-                DUMMY_OTHER_ID,
-                "Spike",
-                "ic_avatar_spike.jpg",
-                JSONUtil.toJson(
-                    ImageContent(
-                        "ic_tired.jpg",
-                        "ic_tired.jpg"
-                    )
-                )
-            )
-        )
-        ITEMS.add(
-            Message(
-                0,
                 ContentType.AUDIO,
                 DUMMY_MY_ID,
                 DUMMY_OTHER_ID,
@@ -151,6 +152,22 @@ object DummyContent {
                 JSONUtil.toJson(
                     AudioContent(
                         "where_did_the_money_go.m4a"
+                    )
+                )
+            )
+        )
+        ITEMS.add(
+            Message(
+                0,
+                ContentType.VIDEO,
+                DUMMY_OTHER_ID,
+                DUMMY_MY_ID,
+                "Jet",
+                "ic_avatar_jet.jpg",
+                JSONUtil.toJson(
+                    VideoContent(
+                        "ic_reason_cover.jpg",
+                        "reason.mp4"
                     )
                 )
             )

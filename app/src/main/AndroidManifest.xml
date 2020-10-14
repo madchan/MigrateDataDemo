@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity"/>
+        <activity android:name=".activity.VideoPlayActivity"/>
     </application>
 
 </manifest>

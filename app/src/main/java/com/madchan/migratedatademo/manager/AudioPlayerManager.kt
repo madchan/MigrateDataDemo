@@ -7,7 +7,7 @@ import android.media.MediaPlayer
 class AudioPlayerManager {
 
     companion object {
-        fun play(path: String): MediaPlayer {
+        fun play(path: String, listener: MediaPlayer.OnCompletionListener): MediaPlayer {
             val audioAttributes = AudioAttributes.Builder()
                 .setLegacyStreamType(AudioManager.STREAM_MUSIC)
                 .build()
@@ -15,6 +15,7 @@ class AudioPlayerManager {
             val mediaPlayer = MediaPlayer()
             mediaPlayer.setDataSource(path)
             mediaPlayer.setAudioAttributes(audioAttributes)
+            mediaPlayer.setOnCompletionListener(listener)
             mediaPlayer.prepare()
             mediaPlayer.start()
             return mediaPlayer

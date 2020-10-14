@@ -69,6 +69,16 @@ class SplashActivity : Activity() {
                             "audios/where_did_the_money_go.m4a",
                             File(OldStorageManager.getMessageAudioStorageDir(), "where_did_the_money_go.m4a")
                         )
+                        AssetsUtil.copyFileFromAssets(
+                            this,
+                            "images/ic_reason_cover.jpg",
+                            File(OldStorageManager.getMessageThumbnailStorageDir(), "ic_reason_cover.jpg")
+                        )
+                        AssetsUtil.copyFileFromAssets(
+                            this,
+                            "videos/reason.mp4",
+                            File(OldStorageManager.getMessageVideoStorageDir(), "reason.mp4")
+                        )
                         LibPreferencesUtil.put(BaseApplication.getContext(), PreferencesKeys.ALREADY_COPIED_FROM_ASSETS, true)
                     }
                 }
