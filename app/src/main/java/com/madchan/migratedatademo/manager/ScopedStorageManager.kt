@@ -167,11 +167,6 @@ class ScopedStorageManager {
 
         /**
          * 从旧版存储位置迁移现有文件
-         * <p>
-         * 1.检查应用的工作文件是否位于 /sdcard/ 目录或其任何子目录中。
-         * 2.将任何私有应用文件从 /sdcard/ 下的当前位置移至 getExternalFilesDir() 方法所返回的目录。
-         * 3.将任何共享的非媒体文件从 /sdcard/ 下的当前位置移至 Downloads/ 目录的应用专用子目录。
-         * 4.从 /sdcard/ 目录中移除应用的旧存储目录。
          * @param dirMap 目录Map
          * @param listener 迁移进度监听器
          */
@@ -220,14 +215,12 @@ class ScopedStorageManager {
                                 }
 
                                 migratedSize += FileUtils.sizeOf(file)
-                                LogUtil.d("migratedSize = $migratedSize")
+                                LogUtil.d("已迁移数据大小 migratedSize = $migratedSize")
 
                                 val progress = (migratedSize * 100 / totalSize.toFloat()).toInt();
-                                LogUtil.d("progress = $progress")
+                                LogUtil.d("迁移进度 progress = $progress")
 
                                 emitter.onNext(progress)    // 回调迁移进度
-
-                                Thread.sleep(200)
                             }
                         }
                     } else {
@@ -236,10 +229,10 @@ class ScopedStorageManager {
                             LogUtil.d("迁移文件[${src.name}]至目录[${destSir.name}]...")
 
                             migratedSize += FileUtils.sizeOf(src)
-                            LogUtil.d("migratedSize = $migratedSize")
+                            LogUtil.d("已迁移数据大小 migratedSize = $migratedSize")
 
                             val progress = (migratedSize * 100 / totalSize.toFloat()).toInt();
-                            LogUtil.d("progress = $progress")
+                            LogUtil.d("迁移进度 progress = $progress")
 
                             emitter.onNext(progress)
                         }

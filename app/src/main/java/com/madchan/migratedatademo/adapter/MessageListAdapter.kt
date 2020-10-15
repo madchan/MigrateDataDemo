@@ -35,11 +35,15 @@ class MessageListAdapter(data: MutableList<Message>? = null) :
     override fun convert(holder: BaseViewHolder, item: Message) {
         holder.setText(R.id.nickname, item.nickname)
         Glide.with(context)
-//            .load(File(OldStorageManager.getAvatarStorageDir(), item.avatar))
-            .load(File(TestStorageManager.getAvatarStorageDir(), item.avatar))
+            .load(File(OldStorageManager.getAvatarStorageDir(), item.avatar))
+//            .load(File(TestStorageManager.getAvatarStorageDir(), item.avatar))
             .centerCrop()
             .circleCrop()
             .into(holder.getView(R.id.avatar))
+
+        holder.itemView.findViewById<View>(R.id.text_layout)?.apply { visibility = View.GONE }
+        holder.itemView.findViewById<View>(R.id.audio_layout)?.apply { visibility = View.GONE }
+        holder.itemView.findViewById<View>(R.id.thumbnail_layout)?.apply { visibility = View.GONE }
 
         // 根据返回的 type 分别设置数据
         when (item.type) {
@@ -54,6 +58,7 @@ class MessageListAdapter(data: MutableList<Message>? = null) :
         val viewStub = holder.getView<ViewStub>(R.id.text_view_stub)
         val view: TextView =
             (if (viewStub.parent != null) viewStub.inflate() else holder.getView(R.id.text_layout)) as TextView
+        view.visibility = View.VISIBLE
         view.text = item.content
     }
 
@@ -66,14 +71,15 @@ class MessageListAdapter(data: MutableList<Message>? = null) :
         val viewStub = holder.getView<ViewStub>(R.id.audio_view_stub)
         val view: ViewGroup =
             (if (viewStub.parent != null) viewStub.inflate() else holder.getView(R.id.audio_layout)) as ViewGroup
+        view.visibility = View.VISIBLE
         val volume = view.findViewById<ImageView>(R.id.volume)
         val audio = JSONUtil.fromJson(item.content, AudioContent::class.java)
         view.setOnClickListener {
             volume.setImageResource(if (item.isReceived()) R.drawable.message_playaudio_blue_animlist else R.drawable.message_playaudio_white_animlist)
             (volume.drawable as AnimationDrawable).start()
-//            AudioPlayerManager.play(File(OldStorageManager.getMessageAudioStorageDir(), audio.compressed).absolutePath, MediaPlayer.OnCompletionListener {
-            AudioPlayerManager.play(File(TestStorageManager.getMessageAudioStorageDir(), audio.compressed).absolutePath, MediaPlayer.OnCompletionListener {
-                (volume.drawable as AnimationDrawable).stop()
+            AudioPlayerManager.play(File(OldStorageManager.getMessageAudioStorageDir(), audio.compressed).absolutePath, MediaPlayer.OnCompletionListener {
+//            AudioPlayerManager.play(File(TestStorageManager.getMessageAudioStorageDir(), audio.compressed).absolutePath, MediaPlayer.OnCompletionListener {
+                if(volume.drawable is AnimationDrawable) (volume.drawable as AnimationDrawable).stop()
                 volume.setImageResource(if(item.isReceived()) R.mipmap.message_ic_voice_blue_3 else R.mipmap.message_ic_voice_blue_r_3)
             })
         }
@@ -85,8 +91,8 @@ class MessageListAdapter(data: MutableList<Message>? = null) :
         val view = convertThumbnail(holder, video.thumbnail)
         holder.setVisible(R.id.play_button, true)
         view.setOnClickListener {
-//            VideoPlayActivity.startActivity(context, File(OldStorageManager.getMessageVideoStorageDir(), video.compressed).absolutePath)
-            VideoPlayActivity.startActivity(context, File(TestStorageManager.getMessageVideoStorageDir(), video.compressed).absolutePath)
+            VideoPlayActivity.startActivity(context, File(OldStorageManager.getMessageVideoStorageDir(), video.compressed).absolutePath)
+//            VideoPlayActivity.startActivity(context, File(TestStorageManager.getMessageVideoStorageDir(), video.compressed).absolutePath)
         }
     }
 
@@ -94,10 +100,11 @@ class MessageListAdapter(data: MutableList<Message>? = null) :
         val viewStub = holder.getView<ViewStub>(R.id.thumbnail_view_stub)
         val view =
             (if (viewStub.parent != null) viewStub.inflate() else holder.getView(R.id.thumbnail_layout)) as View
+        view.visibility = View.VISIBLE
         val imageView = view.findViewById<ImageView>(R.id.thumbnail)
         Glide.with(context)
-//            .load(File(OldStorageManager.getMessageThumbnailStorageDir(), thumbnail))
-            .load(File(TestStorageManager.getMessageThumbnailStorageDir(), thumbnail))
+            .load(File(OldStorageManager.getMessageThumbnailStorageDir(), thumbnail))
+//            .load(File(TestStorageManager.getMessageThumbnailStorageDir(), thumbnail))
             .override(500, 500)
             .centerCrop()
             .into(imageView)
