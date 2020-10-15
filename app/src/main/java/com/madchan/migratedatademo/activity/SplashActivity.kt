@@ -24,40 +24,40 @@ class SplashActivity : Activity() {
 
         OldStorageManager.copyFilesFromAssets(this)
 
-//        TestStorageManager.init("kh123456")
-//        TestStorageManager.migrateExistingFilesFromLegacyStorageDir(object : ScopedStorageManager.ProgressListener() {
-//            override fun onStart() {
-//                LogUtil.d("数据迁移开始: ")
-//                progressBar.visibility = View.VISIBLE
-//                migratingTipsTv.visibility = View.VISIBLE
-//            }
-//
-//            override fun onProgress(progress: Long) {
-//                LogUtil.d("数据正在迁移: $progress%")
-//                progressBar.progress = progress.toInt()
-//                migratingTipsTv.text = "正在为您将数据迁移至应用专属目录($progress%)"
-//            }
-//
-//            override fun onFinish() {
-//                LogUtil.d("数据迁移完成")
-//                progressBar.visibility = View.GONE
-//                migratingTipsTv.visibility = View.GONE
-//                displaySplashView()
-//            }
-//
-//            override fun onError() {
-//                progressBar.visibility = View.GONE
-//                migratingTipsTv.visibility = View.GONE
-//                displaySplashView()
-//            }
-//        })
+        TestStorageManager.init("kh123456")
+        TestStorageManager.migrateExistingFilesFromLegacyStorageDir(object : ScopedStorageManager.ProgressListener() {
+            override fun onStart() {
+                LogUtil.d("数据迁移开始: ")
+                progressBar.visibility = View.VISIBLE
+                migratingTipsTv.visibility = View.VISIBLE
+            }
 
-        displaySplashView()
+            override fun onProgress(progress: Long) {
+                LogUtil.d("数据正在迁移: $progress%")
+                progressBar.progress = progress.toInt()
+                migratingTipsTv.text = "正在为您将数据迁移至应用专属目录($progress%)"
+            }
+
+            override fun onFinish() {
+                LogUtil.d("数据迁移完成")
+                progressBar.visibility = View.GONE
+                migratingTipsTv.visibility = View.GONE
+                displaySplashView()
+            }
+
+            override fun onError() {
+                progressBar.visibility = View.GONE
+                migratingTipsTv.visibility = View.GONE
+                displaySplashView()
+            }
+        })
+
+//        displaySplashView()
     }
 
     private fun displaySplashView() {
-        val splashFile = File(OldStorageManager.getSplashStorageDir(), DummyContent.SPLASH.path)
-//        val splashFile = File(TestStorageManager.getSplashStorageDir(), DummyContent.SPLASH.path)
+//        val splashFile = File(OldStorageManager.getSplashStorageDir(), DummyContent.SPLASH.path)
+        val splashFile = File(TestStorageManager.getSplashStorageDir(), DummyContent.SPLASH.path)
         Glide.with(this)
             .load(if(splashFile.exists()) splashFile else DummyContent.SPLASH.url)
 //            .load(DummyContent.SPLASH.url)
