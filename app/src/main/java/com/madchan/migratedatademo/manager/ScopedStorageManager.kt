@@ -194,7 +194,7 @@ class ScopedStorageManager {
                 }
                 emitter.onNext(0)   // 迁移开始
 
-                LogUtil.d("totalSize = $totalSize")
+                LogUtil.d("需迁移的文件总大小 totalSize = ${FileUtils.byteCountToDisplaySize(totalSize)}")
 
                 var migratedSize = 0L   // 已迁移的文件大小
                 for ((src, destSir) in dirMap.entries) {
@@ -215,7 +215,8 @@ class ScopedStorageManager {
                                 }
 
                                 migratedSize += FileUtils.sizeOf(file)
-                                LogUtil.d("已迁移数据大小 migratedSize = $migratedSize")
+
+                                LogUtil.d("已迁移数据大小 migratedSize = ${FileUtils.byteCountToDisplaySize(migratedSize)}")
 
                                 val progress = (migratedSize * 100 / totalSize.toFloat()).toInt();
                                 LogUtil.d("迁移进度 progress = $progress")
@@ -229,7 +230,7 @@ class ScopedStorageManager {
                             LogUtil.d("迁移文件[${src.name}]至目录[${destSir.name}]...")
 
                             migratedSize += FileUtils.sizeOf(src)
-                            LogUtil.d("已迁移数据大小 migratedSize = $migratedSize")
+                            LogUtil.d("已迁移数据大小 migratedSize = ${FileUtils.byteCountToDisplaySize(migratedSize)}")
 
                             val progress = (migratedSize * 100 / totalSize.toFloat()).toInt();
                             LogUtil.d("迁移进度 progress = $progress")

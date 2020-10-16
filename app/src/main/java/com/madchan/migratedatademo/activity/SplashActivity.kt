@@ -28,12 +28,15 @@ class SplashActivity : Activity() {
         TestStorageManager.migrateExistingFilesFromLegacyStorageDir(object : ScopedStorageManager.ProgressListener() {
             override fun onStart() {
                 LogUtil.d("数据迁移开始: ")
-                progressBar.visibility = View.VISIBLE
-                migratingTipsTv.visibility = View.VISIBLE
+//                progressBar.visibility = View.VISIBLE
+//                migratingTipsTv.visibility = View.VISIBLE
             }
 
             override fun onProgress(progress: Long) {
                 LogUtil.d("数据正在迁移: $progress%")
+                if (View.VISIBLE != progressBar.visibility) progressBar.visibility = View.VISIBLE
+                if (View.VISIBLE != migratingTipsTv.visibility) migratingTipsTv.visibility = View.VISIBLE
+
                 progressBar.progress = progress.toInt()
                 migratingTipsTv.text = "正在为您将数据迁移至应用专属目录($progress%)"
             }
@@ -59,7 +62,7 @@ class SplashActivity : Activity() {
 //        val splashFile = File(OldStorageManager.getSplashStorageDir(), DummyContent.SPLASH.path)
         val splashFile = File(TestStorageManager.getSplashStorageDir(), DummyContent.SPLASH.path)
         Glide.with(this)
-            .load(if(splashFile.exists()) splashFile else DummyContent.SPLASH.url)
+            .load(if (splashFile.exists()) splashFile else DummyContent.SPLASH.url)
 //            .load(DummyContent.SPLASH.url)
             .centerCrop()
             .into(findViewById(R.id.splash))
